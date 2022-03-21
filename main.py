@@ -27,8 +27,8 @@ while True:
     foundHands = myHands.process(imgRGB)
 
     if foundHands.multi_hand_landmarks:
+        actionDone = False
         for hands in foundHands.multi_hand_landmarks:
-            actionDone = False
             for id, location in enumerate(hands.landmark):
                 h, w, c = img.shape
                 cx = int(location.x * w)
@@ -45,14 +45,14 @@ while True:
 
                         #Swipe left --> comp goes right
                         elif (oldcx - cx) > 150 and abs(oldcy - cy) < 100:
-                            keyb.press(Key.right)
-                            keyb.release(Key.right)
+                            keyb.press(Key.left)
+                            keyb.release(Key.left)
                             actionDone = True
 
                         #Swipe right --> comp goes left
                         elif (oldcx - cx) < -150 and abs(oldcy - cy) < 100:
-                            keyb.press(Key.left)
-                            keyb.release(Key.left)
+                            keyb.press(Key.right)
+                            keyb.release(Key.right)
                             actionDone = True
                     
                     oldcx = cx
@@ -65,5 +65,5 @@ while True:
     
     cv2.imshow("MangaReader", img) #show camera
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord('q'): #quit program if user presses q
         break
